@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String    @id @default(uuid()) // Was Firebase UID, now default UUID
+  email            String    @unique
+  name             String?
+  phone            String?
+  password         String?   // Hashed password for custom auth
+  resetToken       String?   // Token for forgot password flow
+  resetTokenExpiry DateTime? // Expiry for the reset token
+  imageUrl         String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  events           Event[]
+  bookings         Booking[]
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  city        String
+  category    String?
+  location    String?
+  price       Int?
+  date        DateTime
+  hostId      String
+  host        User      @relation(fields: [hostId], references: [id])
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Turf {
+  id          Int       @id @default(autoincrement())
+  name        String
+  city        String
+  location    String
+  sport       String
+  price       Int
+  rating      Float     @default(0)
+  reviews     Int       @default(0)
+  image       String?
+  description String?
+  amenities   String[]
+  latitude    Float
+  longitude   Float
+  nets        Net[]
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Net {
+  id           String        @id @default(uuid())
+  turfId       Int
+  turf         Turf          @relation(fields: [turfId], references: [id], onDelete: Cascade)
+  name         String
+  areaType     AreaType
+  bookingSlots BookingSlot[]
+  bookings     Booking[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([turfId])
+}
+
+enum AreaType {
+  INDOOR
+  OUTDOOR
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model Booking {
+  id          String        @id @default(uuid())
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  userName    String
+  userEmail   String
+  userPhone   String
+  turfId      Int?
+  turf        Turf?         @relation(fields: [turfId], references: [id])
+  netId       String?
+  net         Net?          @relation(fields: [netId], references: [id])
+  eventId     String?
+  event       Event?        @relation(fields: [eventId], references: [id])
+  type        String        @default("turf") // "turf" or "event"
+  bookingDate DateTime      @db.Date
+  areaType    AreaType?
+  amount      Int
+  platformFee Int
+  total       Int
+  status      BookingStatus @default(CONFIRMED)
+  slots       BookingSlot[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([userId])
+  @@index([turfId, bookingDate])
+  @@index([eventId, bookingDate])
+}
+
+model BookingSlot {
+  id          String   @id @default(uuid())
+  bookingId   String
+  booking     Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  netId       String
+  net         Net      @relation(fields: [netId], references: [id])
+  turfId      Int
+  bookingDate DateTime @db.Date
+  timeslot    String
+
+  @@unique([turfId, netId, bookingDate, timeslot])
+  @@index([turfId, bookingDate])
+}
