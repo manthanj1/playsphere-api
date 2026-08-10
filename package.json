@@ -5,7 +5,12 @@
   "scripts": {
     "dev": "tsx watch api/index.ts",
     "build": "npx prisma generate && npx tsc",
-    "start": "node dist/api/index.js"
+    "start": "node dist/api/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:migrate:prod": "prisma migrate deploy",
+    "prisma:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
