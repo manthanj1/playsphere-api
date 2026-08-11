@@ -159,8 +159,7 @@ async function main() {
       reviews: 124,
       latitude: 23.0395,
       longitude: 72.5490,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCGfeX0XI_wpvEB1xxJFMRJ2f-K3RKFTfO7uI91bcYsjBr4bcBHLT9y3EYSM9u0l6yDYB3arqXj1meUTnWT59643bCrQBpdml-w0pswnULSj_D5Y7q1Ey122B7AXtBz2sh1znbwuGFPRFctu670WL3vHP1tpr_AtKtYG0ddB2wyjhlGW0dLoDpJLAHQiQY5xZAcLvZTCJSQEqwiXACf6n3iU-abOn4Gw1ai2kQrh41gYPtpD-RXu3nFiA',
+      image: '/images/placeholders/image-1.jpg',
       description:
         'Top-tier indoor box cricket arena with premium turf and LED floodlights. Ideal for competitive teams and weekend matches.',
       amenities: ['Free Parking', 'RO Water', 'LED Floodlights', 'Cafeteria'],
@@ -176,8 +175,7 @@ async function main() {
       reviews: 89,
       latitude: 23.0452,
       longitude: 72.5071,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuAWszFO7fxEiOqntziJH-UA_0cTaOkgvM8MTC6YL8Jq1JJstsQYLtGViWCrEidQzTi40uaIjb1xJP0mt6RqoRWH6DdVE3wJ2UaigICABlBBvASi53QkqyHf6Ca4zaYzOP0KvNjhBYYsHvcbeJ-swjj07xwnHel3QFrO4xmr_e9R9b2-nAVWin1E2k3eyhA81rNUb2nVoTa-fbWZPJmnDvi8cNqhFdQ4GJ2hIZbOKsw3x0_T9yhvRUF9dg',
+      image: '/images/placeholders/image-2.jpg',
       description:
         'Expansive outdoor football arena with FIFA-grade turf and premium coaching staff. Great for leagues and practice sessions.',
       amenities: ['Locker Rooms', 'RO Water', 'Spectator Seating', 'Night Lighting'],
@@ -193,8 +191,7 @@ async function main() {
       reviews: 32,
       latitude: 23.0619,
       longitude: 72.5078,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuDIYAl0mhbrDKB0O6fLp583SWF_-3FxSM_Rcq6aG-mu4tZDrRZQYYFUeZ0IL3_UtT--uGg5bsxE_hmcVhppWwSvyg-GXP33RDyjdTS1Es6sNfjQy6DC8yieogTbvHjzVWjOr-AW-LOQ5wOQaSI0fDnR8jXW5IHLhpQEBbv4xVQsQqAqzo61zuCLCmrBzwaWr8ah8S8tk0VXYGiDGtGKjDc4DoTctkRglNI4PdHw79O623k31isvI5jnpQ',
+      image: '/images/placeholders/image-3.jpg',
       description:
         'Modern padel courts with comfortable seating and a coaching team on standby. Perfect for doubles play and social matches.',
       amenities: ['Equipment Rental', 'Refreshments', 'LED Lighting', 'Match Referees'],
@@ -210,8 +207,7 @@ async function main() {
       reviews: 210,
       latitude: 21.1453,
       longitude: 72.7836,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCGfeX0XI_wpvEB1xxJFMRJ2f-K3RKFTfO7uI91bcYsjBr4bcBHLT9y3EYSM9u0l6yDYB3arqXj1meUTnWT59643bCrQBpdml-w0pswnULSj_D5Y7q1Ey122B7AXtBz2sh1znbwuGFPRFctu670WL3vHP1tpr_AtKtYG0ddB2wyjhlGW0dLoDpJLAHQiQY5xZAcLvZTCJSQEqwiXACf6n3iU-abOn4Gw1ai2kQrh41gYPtpD-RXu3nFiA',
+      image: '/images/placeholders/image-4.jpg',
       description:
         'Spacious cricket ground with turf wickets and an energetic local crowd. Ideal for tournament play and friendly matches.',
       amenities: ['Changing Rooms', 'Food Court', 'First Aid', 'Coach on Call'],
@@ -227,8 +223,7 @@ async function main() {
       reviews: 167,
       latitude: 21.1922,
       longitude: 72.8016,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuAWszFO7fxEiOqntziJH-UA_0cTaOkgvM8MTC6YL8Jq1JJstsQYLtGViWCrEidQzTi40uaIjb1xJP0mt6RqoRWH6DdVE3wJ2UaigICABlBBvASi53QkqyHf6Ca4zaYzOP0KvNjhBYYsHvcbeJ-swjj07xwnHel3QFrO4xmr_e9R9b2-nAVWin1E2k3eyhA81rNUb2nVoTa-fbWZPJmnDvi8cNqhFdQ4GJ2hIZbOKsw3x0_T9yhvRUF9dg',
+      image: '/images/placeholders/image-5.jpg',
       description:
         'Professional football field with natural turf and advanced goalkeeping facilities. A favorite for amateur leagues.',
       amenities: ['Ball Rental', 'Spectator Stands', 'Cafeteria', 'First Aid'],
@@ -244,8 +239,7 @@ async function main() {
       reviews: 88,
       latitude: 21.1587,
       longitude: 72.7974,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuDIYAl0mhbrDKB0O6fLp583SWF_-3FxSM_Rcq6aG-mu4tZDrRZQYYFUeZ0IL3_UtT--uGg5bsxE_hmcVhppWwSvyg-GXP33RDyjdTS1Es6sNfjQy6DC8yieogTbvHjzVWjOr-AW-LOQ5wOQaSI0fDnR8jXW5IHLhpQEBbv4xVQsQqAqzo61zuCLCmrBzwaWr8ah8S8tk0VXYGiDGtGKjDc4DoTctkRglNI4PdHw79O623k31isvI5jnpQ',
+      image: '/images/placeholders/image-6.jpg',
       description:
         'High-performance tennis courts with practice walls, coaching spaces, and tournament-grade surfacing.',
       amenities: ['Coach Training', 'Refreshments', 'Indoor Courts', 'Secure Lockers'],
@@ -261,8 +255,7 @@ async function main() {
       reviews: 56,
       latitude: 22.3072,
       longitude: 73.1812,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCGfeX0XI_wpvEB1xxJFMRJ2f-K3RKFTfO7uI91bcYsjBr4bcBHLT9y3EYSM9u0l6yDYB3arqXj1meUTnWT59643bCrQBpdml-w0pswnULSj_D5Y7q1Ey122B7AXtBz2sh1znbwuGFPRFctu670WL3vHP1tpr_AtKtYG0ddB2wyjhlGW0dLoDpJLAHQiQY5xZAcLvZTCJSQEqwiXACf6n3iU-abOn4Gw1ai2kQrh41gYPtpD-RXu3nFiA',
+      image: '/images/placeholders/image-7.jpg',
       description:
         'Premium box cricket experience with fast-paced nets and strategic lighting. Comfortable seating for teams and guests.',
       amenities: ['Washrooms', 'Hydration Station', 'LED Lights', 'Scoreboard'],
@@ -278,8 +271,7 @@ async function main() {
       reviews: 142,
       latitude: 22.3342,
       longitude: 73.2136,
-      image:
-        'https://lh3.googleusercontent.com/aida-public/AB6AXuCALijbBIkKtCLNRjYE26kZ8HXn2wPWzKImGBd6WTKylX9XeYw8ENhGlI3DFh_g-PQTzfS8FfvLvKXDR1Yvgq3UCDDEpvf28UuRVFw-UJy9IM5lc__h3I1WJfQuHXKYoRCOcu6z7ButltxHOF-2z5d8HVCPunwtunrYEa8Q3cwyWRdGMqmB2bIpjYFX0MqA2icSArQRTjag9m19j1VOoQm84wMLdAQg8p8TjOTsUhWUY0tOEGjBEhG4sQ',
+      image: '/images/placeholders/image-8.jpg',
       description:
         'Versatile multi-sport arena hosting basketball, volleyball, and futsal. Designed for team training and corporate tournaments.',
       amenities: ['Multipurpose Courts', 'Sound System', 'Air Cooling', 'Refreshments'],

@@ -474,6 +474,8 @@ router.get('/bookings', requireAuth, async (req: Request, res: Response) => {
           platformFee: b.platformFee,
           total: b.total,
           location: b.turf?.location || "",
+          netId: b.netId,
+          netName: b.net?.name || "Net",
           createdAt: b.createdAt,
         };
       } else {
