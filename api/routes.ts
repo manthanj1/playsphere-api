@@ -109,6 +109,28 @@ router.post('/auth/profile-photo', requireAuth, upload.single('photo'), async (r
 
 // ── Events ───────────────────────────────────────────────────────────────────
 
+const generateEventTiers = (event: any) => {
+  const basePrice = event.price || 499;
+  if (event.category === "Music" || event.category === "Cultural") {
+    return [
+      { id: "early-bird", name: "Early Bird", price: basePrice, features: ["Event entry", "Standing area"] },
+      { id: "general", name: "General Admission", price: Math.round(basePrice * 1.5), features: ["Event entry", "Standard seating"] },
+      { id: "vip", name: "Backstage Pass", price: Math.round(basePrice * 3), features: ["Priority entry", "Backstage access", "VIP seating"] }
+    ];
+  } else if (event.category === "Sports" || event.category === "Wellness") {
+    return [
+      { id: "spectator", name: "Spectator Pass", price: basePrice, features: ["Entry to venue", "Spectator seating"] },
+      { id: "participant", name: "Participant Entry", price: Math.round(basePrice * 2), features: ["Full participation", "Kit provided"] }
+    ];
+  } else {
+    return [
+      { id: "standard", name: "Standard Entry", price: basePrice, features: ["Event entry", "Standard access"] },
+      { id: "premium", name: "Premium Access", price: Math.round(basePrice * 2.5), features: ["Fast-track entry", "Premium lounge access"] },
+      { id: "ultra", name: "Ultra VIP", price: Math.round(basePrice * 4), features: ["All access", "Meet & Greet", "Free food & beverages"] }
+    ];
+  }
+};
+
 // Public event listing
 router.get('/events', async (_req: Request, res: Response) => {
   try {
@@ -116,7 +138,11 @@ router.get('/events', async (_req: Request, res: Response) => {
       orderBy: { date: 'asc' },
       include: { host: true },
     });
-    res.status(200).json({ events });
+    const eventsWithTiers = events.map(event => ({
+      ...event,
+      tiers: generateEventTiers(event)
+    }));
+    res.status(200).json({ events: eventsWithTiers });
   } catch (error) {
     console.error('Fetch events failed:', error);
     res.status(500).json({ error: 'Failed to fetch events' });
@@ -136,7 +162,7 @@ router.get('/events/:id', async (req: Request<{ id: string }>, res: Response) =>
       return;
     }
 
-    res.status(200).json({ event });
+    res.status(200).json({ event: { ...event, tiers: generateEventTiers(event) } });
   } catch (error) {
     console.error('Fetch event failed:', error);
     res.status(500).json({ error: 'Failed to fetch event' });
@@ -477,6 +503,7 @@ router.get('/bookings', requireAuth, async (req: Request, res: Response) => {
           netId: b.netId,
           netName: b.net?.name || "Net",
           createdAt: b.createdAt,
+          imageUrl: b.turf?.image || "",
         };
       } else {
         return {
@@ -493,6 +520,7 @@ router.get('/bookings', requireAuth, async (req: Request, res: Response) => {
           total: b.total,
           location: b.event?.location || b.event?.city || "",
           createdAt: b.createdAt,
+          imageUrl: b.event?.imageUrl || `/images/placeholders/image-${8 + parseInt(String(b.eventId).split('-')[1] || "1", 10)}.jpg?v=3`,
         };
       }
     });
