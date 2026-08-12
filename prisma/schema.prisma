@@ -104,6 +104,8 @@ model Booking {
   platformFee Int
   total       Int
   status      BookingStatus @default(CONFIRMED)
+  razorpayPaymentId String?
+  razorpayOrderId   String?
   slots       BookingSlot[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt

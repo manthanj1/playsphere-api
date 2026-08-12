@@ -20,6 +20,8 @@ export interface CreateTurfBookingInput {
   amount: number;
   platformFee: number;
   total: number;
+  razorpayPaymentId?: string;
+  razorpayOrderId?: string;
 }
 
 function normalizeDate(date: Date): Date {
@@ -65,6 +67,8 @@ export async function createTurfBookingWithLock(
           platformFee: input.platformFee,
           total: input.total,
           status: 'CONFIRMED',
+          razorpayPaymentId: input.razorpayPaymentId,
+          razorpayOrderId: input.razorpayOrderId,
           slots: {
             create: input.timeslots.map((timeslot) => ({
               netId: input.netId,

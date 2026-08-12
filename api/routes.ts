@@ -382,6 +382,8 @@ router.post('/bookings', requireAuth, async (req: Request, res: Response) => {
       amount,
       platformFee,
       total,
+      razorpayPaymentId,
+      razorpayOrderId
     } = req.body as any;
 
     if (amount == null || platformFee == null || total == null) {
@@ -425,7 +427,9 @@ router.post('/bookings', requireAuth, async (req: Request, res: Response) => {
           amount: parsedAmount,
           platformFee: parsedFee,
           total: parsedTotal,
-          status: 'CONFIRMED'
+          status: 'CONFIRMED',
+          razorpayPaymentId,
+          razorpayOrderId
         }
       });
     } else {
@@ -460,6 +464,8 @@ router.post('/bookings', requireAuth, async (req: Request, res: Response) => {
         amount: parsedAmount,
         platformFee: parsedFee,
         total: parsedTotal,
+        razorpayPaymentId,
+        razorpayOrderId
       });
     }
 
