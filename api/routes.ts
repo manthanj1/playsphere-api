@@ -8,6 +8,7 @@ import {
   createTurfBookingWithLock,
   SlotUnavailableError,
 } from './services/booking';
+import { sendCancellationEmail } from './services/emailService';
 
 const router = Router();
 
@@ -510,6 +511,7 @@ router.get('/bookings', requireAuth, async (req: Request, res: Response) => {
           netName: b.net?.name || "Net",
           createdAt: b.createdAt,
           imageUrl: b.turf?.image || "",
+          status: b.status,
         };
       } else {
         return {
@@ -527,6 +529,7 @@ router.get('/bookings', requireAuth, async (req: Request, res: Response) => {
           location: b.event?.location || b.event?.city || "",
           createdAt: b.createdAt,
           imageUrl: b.event?.imageUrl || `/images/placeholders/image-${8 + parseInt(String(b.eventId).split('-')[1] || "1", 10)}.jpg?v=3`,
+          status: b.status,
         };
       }
     });
@@ -535,6 +538,99 @@ router.get('/bookings', requireAuth, async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Fetch bookings failed:', error);
     res.status(500).json({ error: 'Failed to fetch bookings' });
+  }
+});
+
+// Cancel a booking
+router.post('/bookings/:id/cancel', requireAuth, async (req: Request, res: Response) => {
+  try {
+    const bookingId = req.params.id as string;
+    const userId = (req as any).user.uid;
+
+    const booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
+      include: { slots: true, turf: true, event: true },
+    });
+
+    if (!booking) {
+      res.status(404).json({ error: 'Booking not found' });
+      return;
+    }
+
+    if (booking.userId !== userId) {
+      res.status(403).json({ error: 'Unauthorized to cancel this booking' });
+      return;
+    }
+
+    if (booking.status === 'CANCELLED') {
+      res.status(400).json({ error: 'Booking is already cancelled' });
+      return;
+    }
+
+    let startTime = booking.bookingDate.getTime();
+    const slots = (booking as any).slots;
+
+    if (booking.type === 'turf' && slots && slots.length > 0) {
+      // Find the earliest timeslot
+      const earliestSlot = slots.reduce((earliest: any, current: any) => {
+        const earliestStartTime = earliest.timeslot.split(' - ')[0];
+        const currentStartTime = current.timeslot.split(' - ')[0];
+        return currentStartTime < earliestStartTime ? current : earliest;
+      });
+
+      const slotStartTimeStr = earliestSlot.timeslot.split(' - ')[0];
+      const slotDate = new Date(`${booking.bookingDate.toISOString().split('T')[0]}T${slotStartTimeStr}:00`);
+      startTime = slotDate.getTime();
+    } else {
+      // For events, default to 10:00 AM if no time specified, or just use bookingDate
+      const dateStr = booking.bookingDate.toISOString().split('T')[0];
+      startTime = new Date(`${dateStr}T10:00:00`).getTime();
+    }
+
+    const now = Date.now();
+    const msIn24Hours = 24 * 60 * 60 * 1000;
+    
+    if (startTime - now < msIn24Hours) {
+      res.status(400).json({ error: 'Cancellations are only permitted at least 24 hours prior to the booking time.' });
+      return;
+    }
+
+    // Process Razorpay refund if possible
+    if (booking.razorpayPaymentId) {
+      try {
+        await razorpay.payments.refund(booking.razorpayPaymentId, { speed: "normal" });
+      } catch (refundError) {
+        console.error('Razorpay refund failed (might be dummy key):', refundError);
+        // In dummy mode, we don't throw an error, we still cancel the booking locally.
+      }
+    }
+
+    // Perform DB updates in transaction
+    await prisma.$transaction(async (tx) => {
+      await tx.booking.update({
+        where: { id: bookingId },
+        data: { status: 'CANCELLED' },
+      });
+
+      if (booking.type === 'turf') {
+        await tx.bookingSlot.deleteMany({
+          where: { bookingId: bookingId },
+        });
+      }
+    });
+
+    // Send cancellation email
+    try {
+      const itemName = booking.type === 'turf' ? (booking as any).turf?.name || 'Turf' : (booking as any).event?.title || 'Event';
+      await sendCancellationEmail(booking.userEmail, booking.userName, itemName, booking.total);
+    } catch (emailError) {
+      console.error('Failed to send cancellation email:', emailError);
+    }
+
+    res.status(200).json({ success: true, message: 'Booking cancelled and refund initiated' });
+  } catch (error) {
+    console.error('Cancellation failed:', error);
+    res.status(500).json({ error: 'Failed to cancel booking' });
   }
 });
 

@@ -3,6 +3,7 @@ import cors from 'cors';
 import path from 'path';
 import { requireAuth } from './middleware/auth';
 import routes from './routes';
+import { startWeatherJob } from './jobs/weatherJob';
 
 const app = express();
 
@@ -30,6 +31,9 @@ app.get('/api/protected', requireAuth, (req: Request, res: Response) => {
 
 // API routes
 app.use('/api', routes);
+
+// Start background jobs
+startWeatherJob();
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
